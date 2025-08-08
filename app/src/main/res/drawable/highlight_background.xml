@@ -1,0 +1,7 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="#FFF9C4" /> <!-- Soft yellow highlight -->
+    <stroke android:width="2dp" android:color="#FFD600" />
+    <corners android:radius="12dp" />
+</shape>
