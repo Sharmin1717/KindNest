@@ -1,73 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="16dp">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <EditText
+        android:id="@+id/amountEt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:hint="Donation Amount"
+        android:inputType="numberDecimal"
+        android:minHeight="48dp" />
 
-        <EditText
-            android:id="@+id/editTextAmount"
-            android:hint="Donation Amount"
-            android:inputType="numberDecimal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:padding="12dp" />
+    <EditText
+        android:id="@+id/mobileEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mobile Number"
+        android:inputType="phone"
+        android:minHeight="48dp" />
 
-        <EditText
-            android:id="@+id/editTextPhone"
-            android:hint="Mobile Number"
-            android:inputType="phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:padding="12dp"
-            android:layout_marginTop="12dp" />
+    <EditText
+        android:id="@+id/purposeEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Purpose of Donation"
+        android:inputType="text"
+        android:minHeight="48dp" />
 
-        <EditText
-            android:id="@+id/editTextTransactionId"
-            android:hint="Transaction ID"
-            android:inputType="text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:padding="12dp"
-            android:layout_marginTop="12dp" />
+    <Button
+        android:id="@+id/payBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Donate Now" />
 
-        <RadioGroup
-            android:id="@+id/radioGroupMethod"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+    <WebView
+        android:id="@+id/paymentWebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
-            <RadioButton
-                android:id="@+id/radioBkash"
-                android:text="bKash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:padding="8dp" />
-
-            <RadioButton
-                android:id="@+id/radioNagad"
-                android:text="Nagad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:padding="8dp" />
-        </RadioGroup>
-
-        <Button
-            android:id="@+id/buttonSubmit"
-            android:text="Submit Donation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:padding="12dp"
-            android:layout_marginTop="20dp" />
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

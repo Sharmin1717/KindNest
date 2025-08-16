@@ -17,7 +17,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.regex.Pattern;
-
 public class SignupActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
