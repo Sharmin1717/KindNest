@@ -1,5 +1,6 @@
 package com.example.kindnestapp2;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
@@ -22,18 +22,24 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private static final int TYPE_CATEGORY = 0;
     private static final int TYPE_SUBCATEGORY = 1;
+
     private final List<Object> displayList;
+    private final OnDonateClickListener listener;
     private final String ngoName;
-    private final DonationActivity activity;
+
+    // Listener interface for donation button click
+    public interface OnDonateClickListener {
+        void onDonateClick(SubCategoryItem item);
+    }
 
     public static class SubCategoryItem {
         public final String name;
         public SubCategoryItem(String name) { this.name = name; }
     }
 
-    public DonationAdapter(DonationActivity activity, List<Object> displayList, String ngoName) {
-        this.activity = activity;
+    public DonationAdapter(String ngoName, List<Object> displayList, OnDonateClickListener listener) {
         this.displayList = displayList;
+        this.listener = listener;
         this.ngoName = ngoName;
     }
 
@@ -50,7 +56,7 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (viewType == TYPE_CATEGORY)
             return new CategoryViewHolder(inflater.inflate(R.layout.item_donation_category, parent, false));
         else
-            return new SubCategoryViewHolder(inflater.inflate(R.layout.item_donation_subcategory, parent, false));
+            return new SubCategoryViewHolder(inflater.inflate(R.layout.item_donation_subcategory, parent, false), listener, ngoName);
     }
 
     @Override
@@ -166,7 +172,7 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    // --- VIEWHOLDERS ---
+    // --- CATEGORY VIEWHOLDER ---
     class CategoryViewHolder extends RecyclerView.ViewHolder {
         ImageView categoryIcon;
         TextView categoryTitle;
@@ -184,55 +190,30 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    // --- SUBCATEGORY VIEWHOLDER ---
     class SubCategoryViewHolder extends RecyclerView.ViewHolder {
         ImageView subCategoryIcon;
         TextView subCategoryName;
         MaterialButton donateItemButton;
 
-        SubCategoryViewHolder(@NonNull View itemView) {
+        SubCategoryViewHolder(@NonNull View itemView, OnDonateClickListener listener, String ngoName) {
             super(itemView);
             subCategoryIcon = itemView.findViewById(R.id.subcategory_icon);
             subCategoryName = itemView.findViewById(R.id.subcategory_name);
             donateItemButton = itemView.findViewById(R.id.donate_item_button);
+
+            donateItemButton.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && displayList.get(position) instanceof SubCategoryItem) {
+                    SubCategoryItem item = (SubCategoryItem) displayList.get(position);
+                    listener.onDonateClick(item);
+                }
+            });
         }
 
         void bind(SubCategoryItem item) {
             subCategoryIcon.setImageResource(getIconForSubcategory(item.name));
-            String cleanSubCategoryName = item.name.replace('_', ' ');
-            subCategoryName.setText(cleanSubCategoryName);
-            donateItemButton.setOnClickListener(v -> showAmountDialog(item));
-        }
-
-        private void showAmountDialog(SubCategoryItem item) {
-            String cleanDialogTitle = item.name.replace('_', ' ');
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setTitle("Donate for: " + cleanDialogTitle);
-            builder.setMessage("Enter the amount (BDT) you wish to donate:");
-            final EditText input = new EditText(activity);
-            input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            builder.setView(input);
-
-            builder.setPositiveButton("Proceed to Pay", (dialog, which) -> {
-                String amountStr = input.getText().toString().trim();
-                if (amountStr.isEmpty()) {
-                    Toast.makeText(activity, "Please enter an amount", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                try {
-                    double amount = Double.parseDouble(amountStr);
-                    // Launch DonationFormActivity with data
-                    Intent intent = new Intent(activity, DonationFormActivity.class);
-                    intent.putExtra("NGO_NAME", ngoName);
-                    intent.putExtra("SUBCATEGORY", cleanDialogTitle);
-                    intent.putExtra("AMOUNT", amount);
-                    activity.startActivity(intent);
-                } catch (NumberFormatException e) {
-                    Toast.makeText(activity, "Invalid amount", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-            builder.show();
+            subCategoryName.setText(item.name.replace('_',' '));
         }
     }
 }

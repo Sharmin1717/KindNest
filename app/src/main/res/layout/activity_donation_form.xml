@@ -4,6 +4,16 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- TITLE TEXT -->
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Donate"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:paddingBottom="16dp"/>
+
     <EditText
         android:id="@+id/amountEt"
         android:layout_width="match_parent"

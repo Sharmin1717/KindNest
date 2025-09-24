@@ -1,13 +1,17 @@
-// CORRECTED and DYNAMIC DonationActivity.java
-
 package com.example.kindnestapp2;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,42 +22,34 @@ public class DonationActivity extends AppCompatActivity {
     private DonationAdapter donationAdapter;
     private List<Object> displayList;
     private String ngoName;
-    private NGO selectedNgo; // The NGO object received from the previous screen
+    private NGO selectedNgo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donation);
 
-        // --- FIX #1: Get the selected NGO object from the Intent ---
-        // The key "NGO_OBJECT" matches what you send from MainActivity
         selectedNgo = (NGO) getIntent().getSerializableExtra("NGO_OBJECT");
-
-        // --- CRITICAL: Check if data was received correctly ---
         if (selectedNgo == null) {
-            Toast.makeText(this, "Could not load NGO data. Please try again.", Toast.LENGTH_LONG).show();
-            finish(); // Close the activity if data is missing
+            Toast.makeText(this, "Could not load NGO data.", Toast.LENGTH_LONG).show();
+            finish();
             return;
         }
         ngoName = selectedNgo.getName();
 
-        // --- Setup the Toolbar ---
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Donate to " + ngoName); // Set title dynamically
+        setTitle("Donate to " + ngoName);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        // --- Setup the RecyclerView ---
         recyclerView = findViewById(R.id.donation_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // --- Prepare data dynamically and setup the adapter ---
         setupDynamicCategoryList();
     }
 
     private void setupDynamicCategoryList() {
         displayList = new ArrayList<>();
-        // --- FIX #2: Get categories from the REAL NGO object, not hardcoded ones ---
         Map<String, Map<String, Boolean>> categories = selectedNgo.getCategories();
 
         if (categories == null || categories.isEmpty()) {
@@ -61,28 +57,50 @@ public class DonationActivity extends AppCompatActivity {
             return;
         }
 
-        // Loop through the NGO's actual categories from Firebase
+        // Populate displayList with categories and subcategories
         for (Map.Entry<String, Map<String, Boolean>> categoryEntry : categories.entrySet()) {
-            // Add category title (e.g., "Health")
             displayList.add(categoryEntry.getKey());
-
             Map<String, Boolean> subCategories = categoryEntry.getValue();
             if (subCategories != null) {
-                // Add all its subcategories (e.g., "Medicine Fund", "Hospital Equipment")
                 for (String subCategoryName : subCategories.keySet()) {
                     displayList.add(new DonationAdapter.SubCategoryItem(subCategoryName));
                 }
             }
         }
 
-        // Create the adapter with the dynamically built list
-        donationAdapter = new DonationAdapter(this, displayList, ngoName);
+        // Fix: pass ngoName as first argument
+        donationAdapter = new DonationAdapter(ngoName, displayList, item -> showAmountDialog(item));
         recyclerView.setAdapter(donationAdapter);
     }
 
-    public void initiatePayment(DonationAdapter.SubCategoryItem item, double amount) {
-        String message = "SUCCESS: Preparing to donate BDT " + amount +
-                " for '" + item.name + "' to " + ngoName;
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    private void showAmountDialog(DonationAdapter.SubCategoryItem item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Donate for: " + item.name.replace('_', ' '));
+        builder.setMessage("Enter the amount (BDT) you wish to donate:");
+
+        EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        builder.setView(input);
+
+        builder.setPositiveButton("Proceed to Pay", (dialog, which) -> {
+            String amountStr = input.getText().toString().trim();
+            if (amountStr.isEmpty()) {
+                Toast.makeText(this, "Please enter an amount", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                double amount = Double.parseDouble(amountStr);
+                Intent intent = new Intent(DonationActivity.this, DonationFormActivity.class);
+                intent.putExtra("NGO_NAME", ngoName);
+                intent.putExtra("SUBCATEGORY", item.name.replace('_', ' '));
+                intent.putExtra("AMOUNT", amount);
+                startActivity(intent);
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Invalid amount", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 }
