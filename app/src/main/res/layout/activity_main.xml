@@ -8,6 +8,7 @@
     android:background="?android:attr/colorBackground"
     tools:context=".MainActivity">
 
+    <!-- Header Layout -->
     <LinearLayout
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
@@ -18,12 +19,14 @@
         android:orientation="vertical"
         android:paddingBottom="16dp">
 
+        <!-- Header Bar with Logo, Notification, and Profile -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:paddingHorizontal="16dp">
 
+            <!-- KindNest Logo -->
             <ImageView
                 android:id="@+id/kindnest_logo"
                 android:layout_width="120dp"
@@ -32,8 +35,22 @@
                 android:layout_centerVertical="true"
                 android:adjustViewBounds="true"
                 android:src="@drawable/kindnestlogo"
-                android:contentDescription="@string/app_name"/>
+                android:contentDescription="@string/app_name" />
 
+            <!-- 🔔 Notification Bell Icon -->
+            <ImageView
+                android:id="@+id/notification_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_toStartOf="@id/profile_button"
+                android:layout_marginEnd="12dp"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="4dp"
+                android:src="@drawable/ic_notifications"
+                android:contentDescription="Notifications" />
+
+            <!-- 👤 Profile Icon -->
             <ImageView
                 android:id="@+id/profile_button"
                 android:layout_width="40dp"
@@ -43,16 +60,17 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="4dp"
                 android:src="@drawable/profile"
-                android:contentDescription="Profile"/>
+                android:contentDescription="Profile" />
         </RelativeLayout>
 
+        <!-- Subtitle Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:paddingHorizontal="16dp"
             android:text="Your Nest of Kindness"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -60,10 +78,10 @@
             android:paddingHorizontal="16dp"
             android:text="Select an NGO to support"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="?android:attr/textColorSecondary"/>
-
+            android:textColor="?android:attr/textColorSecondary" />
     </LinearLayout>
 
+    <!-- RecyclerView for NGO list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ngo_recycler_view"
         android:layout_width="match_parent"
@@ -73,6 +91,7 @@
         android:paddingTop="8dp"
         tools:listitem="@layout/ngo_item" />
 
+    <!-- Progress Bar -->
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"

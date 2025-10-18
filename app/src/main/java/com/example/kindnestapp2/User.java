@@ -6,10 +6,13 @@ public class User {
     public String email;
     public String phone;
     public String role;
-    public String profileImageUrl; // <-- THIS IS THE NEW FIELD
+    public String profileImageUrl;
+    public boolean approved; // For admin to approve users
+    private String uid; // To store Firebase UID
 
     // A public no-argument constructor is required for Firebase
     public User() {
+        this.approved = false; // Default to not approved
     }
 
     public User(String username, String email, String phone, String role) {
@@ -18,9 +21,11 @@ public class User {
         this.phone = phone;
         this.role = role;
         this.profileImageUrl = ""; // Default to an empty string
+        this.approved = false; // Default to not approved
     }
 
     // --- Getters and Setters ---
+    public String getName() { return username; } // For compatibility with UserManagementActivity
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 
@@ -33,7 +38,12 @@ public class User {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
-    // --- GETTER AND SETTER FOR THE NEW FIELD ---
     public String getProfileImageUrl() { return profileImageUrl; }
     public void setProfileImageUrl(String profileImageUrl) { this.profileImageUrl = profileImageUrl; }
+
+    public boolean isApproved() { return approved; }
+    public void setApproved(boolean approved) { this.approved = approved; }
+
+    public String getUid() { return uid; }
+    public void setUid(String uid) { this.uid = uid; }
 }

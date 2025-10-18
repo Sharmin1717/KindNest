@@ -21,7 +21,10 @@
     <color name="dark_card_surface">#1E2933</color>
     <color name="dark_text_primary">#E0E7EE</color> <!-- Soft off-white -->
     <color name="dark_text_secondary">#94A3B8</color>
-
+    <color name="background_light">#F7F7F7</color>
+    <color name="green">#248027</color>
+    <color name="acknowledge">#109116</color>
+    <color name="red" />
 
 
 </resources>

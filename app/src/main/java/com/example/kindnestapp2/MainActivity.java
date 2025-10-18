@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +34,13 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
     private NGOAdapter ngoAdapter;
     private List<NGO> ngoList;
     private DatabaseReference ngoRef;
+
     private ProgressBar progressBar;
+
+    // 🔔 Notifications
+    private ImageView notificationBtn;
+    private DatabaseReference donationsRef;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
         setContentView(R.layout.activity_main);
 
         ImageView profileBtn = findViewById(R.id.profile_button);
+        notificationBtn = findViewById(R.id.notification_button); // 🔔
         progressBar = findViewById(R.id.progress_bar);
         ngoRecyclerView = findViewById(R.id.ngo_recycler_view);
         ngoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -49,14 +57,84 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
         ngoAdapter = new NGOAdapter(this, ngoList, this);
         ngoRecyclerView.setAdapter(ngoAdapter);
 
-        // Firebase reference to "ngos"
         ngoRef = FirebaseDatabase.getInstance().getReference("ngos");
 
-        profileBtn.setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
+        // Firebase setup for donations
+        auth = FirebaseAuth.getInstance();
+        donationsRef = FirebaseDatabase.getInstance().getReference("donations");
+
+        profileBtn.setOnClickListener(v ->
+                startActivity(new Intent(this, ProfileActivity.class)));
+
+        // 🔔 Notification button click → open acknowledged donations
+        notificationBtn.setOnClickListener(v -> markAcknowledgedAsSeenAndOpen());
+
+        // Listen for new acknowledged donations
+        listenForAcknowledgedDonations();
 
         loadNGOsFromFirebase();
     }
 
+    /** Listen for acknowledged donations that the user hasn’t seen yet */
+    private void listenForAcknowledgedDonations() {
+        if (auth.getCurrentUser() == null) return;
+        String userId = auth.getCurrentUser().getUid();
+
+        donationsRef.orderByChild("userId").equalTo(userId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        boolean hasNewAcknowledged = false;
+
+                        for (DataSnapshot donationSnap : snapshot.getChildren()) {
+                            Donation donation = donationSnap.getValue(Donation.class);
+                            if (donation != null
+                                    && "acknowledged".equalsIgnoreCase(donation.getStatus())
+                                    && !donation.isSeenByUser()) {
+                                hasNewAcknowledged = true;
+                                break; // no need to check further
+                            }
+                        }
+
+                        // Update bell icon
+                        notificationBtn.setImageResource(
+                                hasNewAcknowledged ? R.drawable.ic_notifications_new : R.drawable.ic_notifications
+                        );
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) { }
+                });
+    }
+
+    /** Mark all acknowledged donations as seen and open the AcknowledgedDonationsActivity */
+    private void markAcknowledgedAsSeenAndOpen() {
+        if (auth.getCurrentUser() == null) return;
+        String userId = auth.getCurrentUser().getUid();
+
+        donationsRef.orderByChild("userId").equalTo(userId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot donationSnap : snapshot.getChildren()) {
+                            Donation donation = donationSnap.getValue(Donation.class);
+                            if (donation != null
+                                    && "acknowledged".equalsIgnoreCase(donation.getStatus())
+                                    && !donation.isSeenByUser()) {
+                                donationSnap.getRef().child("seenByUser").setValue(true);
+                            }
+                        }
+
+                        // Open the acknowledged donations screen
+                        startActivity(new Intent(MainActivity.this, AcknowledgedDonationsActivity.class));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) { }
+                });
+    }
+
+    /** Load NGO list from Firebase */
     private void loadNGOsFromFirebase() {
         progressBar.setVisibility(View.VISIBLE);
         ngoRecyclerView.setVisibility(View.GONE);
@@ -79,11 +157,13 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(MainActivity.this, "Failed to load NGOs: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,
+                        "Failed to load NGOs: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /** Show NGO details in bottom sheet */
     @Override
     public void onNGOClick(NGO ngo) {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
@@ -95,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
         TextView focus = dialogView.findViewById(R.id.dialog_ngo_focus);
         TextView categories = dialogView.findViewById(R.id.dialog_ngo_categories);
 
-        // NEW FIELDS
         TextView phone = dialogView.findViewById(R.id.dialog_ngo_phone);
         TextView email = dialogView.findViewById(R.id.dialog_ngo_email);
         TextView website = dialogView.findViewById(R.id.dialog_ngo_website);
@@ -104,18 +183,15 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
         MaterialButton donateButton = dialogView.findViewById(R.id.button_donate);
         MaterialButton closeButton = dialogView.findViewById(R.id.button_close);
 
-        // Set details
         name.setText(ngo.getName());
         focus.setText(ngo.getFocusArea());
         Glide.with(this).load(ngo.getLogoUrl()).into(logo);
 
-        // EXTRA INFO
         phone.setText("Phone: " + (ngo.getPhone() != null ? ngo.getPhone() : "N/A"));
         email.setText("Email: " + (ngo.getEmail() != null ? ngo.getEmail() : "N/A"));
         website.setText("Website: " + (ngo.getWebsite() != null ? ngo.getWebsite() : "N/A"));
         address.setText("Address: " + (ngo.getAddress() != null ? ngo.getAddress() : "N/A"));
 
-        // Categories
         StringBuilder categoriesText = new StringBuilder();
         if (ngo.getCategories() != null && !ngo.getCategories().isEmpty()) {
             for (String category : ngo.getCategories().keySet()) {
@@ -126,7 +202,6 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
         }
         categories.setText(categoriesText.toString().trim());
 
-        // Donate button
         donateButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, DonationActivity.class);
             intent.putExtra("NGO_OBJECT", ngo);
@@ -134,16 +209,13 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
             bottomSheetDialog.dismiss();
         });
 
-        // Clickable website link
         website.setOnClickListener(v -> {
             if (ngo.getWebsite() != null && !ngo.getWebsite().isEmpty()) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ngo.getWebsite()));
-                startActivity(browserIntent);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ngo.getWebsite())));
             }
         });
 
         closeButton.setOnClickListener(v -> bottomSheetDialog.dismiss());
-
         bottomSheetDialog.show();
     }
 }

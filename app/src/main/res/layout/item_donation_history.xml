@@ -44,6 +44,23 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             tools:text="Date: Oct 26, 2023" />
 
+        <TextView
+            android:id="@+id/history_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Status: Acknowledged"
+            android:textColor="@color/green"
+            android:textStyle="bold"
+            tools:text="Status: Acknowledged" />
+
+        <Button
+            android:id="@+id/view_details_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View Details"
+            android:layout_marginTop="8dp"/>
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

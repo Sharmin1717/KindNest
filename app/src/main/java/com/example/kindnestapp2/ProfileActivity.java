@@ -1,5 +1,3 @@
-// src/main/java/com/example/kindnestapp2/ProfileActivity.java
-
 package com.example.kindnestapp2;
 
 import android.content.Intent;
@@ -19,8 +17,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private EditText nameEditText, emailEditText, phoneEditText, passwordEditText;
-    private Button editProfileButton, paymentMethodButton, donationHistoryButton;
+    private EditText nameEditText, emailEditText, phoneEditText;
+    private Button editProfileButton, donationHistoryButton;
     private ImageView backButton;
 
     private FirebaseAuth mAuth;
@@ -39,10 +37,9 @@ public class ProfileActivity extends AppCompatActivity {
         nameEditText = findViewById(R.id.nameEditText);
         emailEditText = findViewById(R.id.emailEditText);
         phoneEditText = findViewById(R.id.phoneEditText);
-        passwordEditText = findViewById(R.id.passwordEditText); // Bind the password field
         editProfileButton = findViewById(R.id.editProfileButton);
-        paymentMethodButton = findViewById(R.id.paymentMethodButton);
         donationHistoryButton = findViewById(R.id.donationHistoryButton);
+        Button logoutButton = findViewById(R.id.logoutButton);
         backButton = findViewById(R.id.backButton);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -73,16 +70,30 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        // FIXED: This button now goes to the main NGO list to start a donation
-        paymentMethodButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-            startActivity(intent);
-        });
+
 
         // Donation History Button Click Listener
         donationHistoryButton.setOnClickListener(v -> {
             Intent intent = new Intent(ProfileActivity.this, DonationHistoryActivity.class);
             startActivity(intent);
+        });
+
+        // Logout Button Click Listener
+        logoutButton.setOnClickListener(v -> {
+            // Sign out from Firebase
+            mAuth.signOut();
+
+            // Clear session
+            SessionManager.getInstance(ProfileActivity.this).logout();
+
+            // Show success message
+            Toast.makeText(ProfileActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+
+            // Redirect to login screen
+            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         });
     }
 

@@ -76,10 +76,11 @@ public class DonationActivity extends AppCompatActivity {
     private void showAmountDialog(DonationAdapter.SubCategoryItem item) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Donate for: " + item.name.replace('_', ' '));
-        builder.setMessage("Enter the amount (BDT) you wish to donate:");
+        builder.setMessage("Enter the amount you wish to donate:");
 
         EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        input.setHint("Amount in BDT"); // hint shows BDT, input is still numeric only
         builder.setView(input);
 
         builder.setPositiveButton("Proceed to Pay", (dialog, which) -> {
@@ -89,7 +90,7 @@ public class DonationActivity extends AppCompatActivity {
                 return;
             }
             try {
-                double amount = Double.parseDouble(amountStr);
+                double amount = Double.parseDouble(amountStr); // numeric only
                 Intent intent = new Intent(DonationActivity.this, DonationFormActivity.class);
                 intent.putExtra("NGO_NAME", ngoName);
                 intent.putExtra("SUBCATEGORY", item.name.replace('_', ' '));
@@ -103,4 +104,5 @@ public class DonationActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         builder.show();
     }
+
 }

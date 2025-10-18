@@ -8,12 +8,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -49,22 +47,32 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
-                        userRef.child(user.getUid()).get().addOnSuccessListener(snapshot -> {
-                            if (snapshot.exists()) {
-                                String role = snapshot.child("role").getValue(String.class);
-                                if ("admin".equals(role)) {
-                                    startActivity(new Intent(LoginActivity.this, AdminActivity.class));
+                        if (user.isEmailVerified()) {
+                            // Email is verified
+                            userRef.child(user.getUid()).get().addOnSuccessListener(snapshot -> {
+                                if (snapshot.exists()) {
+                                    String role = snapshot.child("role").getValue(String.class);
+                                    if ("admin".equals(role)) {
+                                        startActivity(new Intent(LoginActivity.this, AdminActivity.class));
+                                    } else {
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    }
+                                    finish();
                                 } else {
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    Toast.makeText(LoginActivity.this, "User role not found!", Toast.LENGTH_SHORT).show();
                                 }
-                                finish();
-                            } else {
-                                Toast.makeText(LoginActivity.this, "User role not found!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                            });
+                        } else {
+                            // Email not verified
+                            Toast.makeText(LoginActivity.this,
+                                    "Please verify your email before logging in.",
+                                    Toast.LENGTH_LONG).show();
+                            mAuth.signOut();
+                        }
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Authentication failed. " +
+                            task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
         });

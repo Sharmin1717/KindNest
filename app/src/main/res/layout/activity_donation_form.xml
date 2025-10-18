@@ -1,53 +1,144 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:fillViewport="true">
 
-    <!-- TITLE TEXT -->
-    <TextView
-        android:id="@+id/titleTextView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Donate"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:paddingBottom="16dp"/>
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:ignore="WebViewLayout">
 
-    <EditText
-        android:id="@+id/amountEt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Donation Amount"
-        android:inputType="numberDecimal"
-        android:minHeight="48dp" />
+        <!-- Title -->
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Donate"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingBottom="16dp" />
 
-    <EditText
-        android:id="@+id/mobileEt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Mobile Number"
-        android:inputType="phone"
-        android:minHeight="48dp" />
+        <!-- Donation Amount -->
+        <EditText
+            android:id="@+id/amountEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Donation Amount"
+            android:inputType="numberDecimal"
+            android:minHeight="48dp" />
 
-    <EditText
-        android:id="@+id/purposeEt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Purpose of Donation"
-        android:inputType="text"
-        android:minHeight="48dp" />
+        <!-- Mobile Number -->
+        <EditText
+            android:id="@+id/mobileEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mobile Number"
+            android:inputType="phone"
+            android:minHeight="48dp" />
 
-    <Button
-        android:id="@+id/payBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Donate Now" />
+        <!-- Purpose -->
+        <EditText
+            android:id="@+id/purposeEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Purpose of Donation"
+            android:inputType="text"
+            android:minHeight="48dp" />
 
-    <WebView
-        android:id="@+id/paymentWebView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+        <!-- UddoktaPay Demo Button -->
+        <Button
+            android:id="@+id/payBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Donate via UddoktaPay Demo"
+            android:layout_marginTop="16dp" />
 
-</LinearLayout>
+        <!-- bKash Dummy Payment -->
+        <LinearLayout
+            android:id="@+id/dummyBkashBtn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="?attr/selectableItemBackground"
+            android:padding="8dp"
+            android:layout_marginTop="12dp">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/bkash_logo"
+                android:contentDescription="bKash Logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Donate via bKash"
+                android:textSize="16sp"
+                android:paddingStart="12dp"/>
+        </LinearLayout>
+
+        <!-- Nagad Dummy Payment -->
+        <LinearLayout
+            android:id="@+id/dummyNagadBtn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="?attr/selectableItemBackground"
+            android:padding="8dp"
+            android:layout_marginTop="12dp">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/nagad_logo"
+                android:contentDescription="Nagad Logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Donate via Nagad"
+                android:textSize="16sp"
+                android:paddingStart="12dp"/>
+        </LinearLayout>
+
+        <!-- Rocket Dummy Payment -->
+        <LinearLayout
+            android:id="@+id/dummyRocketBtn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="?attr/selectableItemBackground"
+            android:padding="8dp"
+            android:layout_marginTop="12dp">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/rocket_logo"
+                android:contentDescription="Rocket Logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Donate via Rocket"
+                android:textSize="16sp"
+                android:paddingStart="12dp"/>
+        </LinearLayout>
+
+        <!-- WebView for UddoktaPay -->
+        <WebView
+            android:id="@+id/paymentWebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>

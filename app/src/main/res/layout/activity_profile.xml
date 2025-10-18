@@ -13,6 +13,7 @@
         android:gravity="center_horizontal"
         android:padding="20dp">
 
+        <!-- Back Button -->
         <ImageView
             android:id="@+id/backButton"
             android:layout_width="48dp"
@@ -22,6 +23,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Back" />
 
+        <!-- Logo -->
         <ImageView
             android:id="@+id/logoImageView"
             android:layout_width="100dp"
@@ -29,6 +31,7 @@
             android:src="@drawable/kindnestlogo"
             android:layout_marginTop="10dp" />
 
+        <!-- Profile Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,6 +40,7 @@
             android:textStyle="bold"
             android:layout_marginTop="10dp" />
 
+        <!-- Name Label -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,6 +48,7 @@
             android:textStyle="bold"
             android:layout_marginTop="10dp" />
 
+        <!-- Name Input -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,36 +70,7 @@
                 android:hint="Enter your name" />
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Your Password"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="10dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/password" />
-
-            <EditText
-                android:id="@+id/passwordEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:background="@android:color/transparent"
-                android:hint="Password cannot be changed here"
-                android:enabled="false"
-                android:inputType="textPassword"
-                android:paddingStart="10dp" />
-        </LinearLayout>
-
+        <!-- Email Label -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -102,6 +78,7 @@
             android:textStyle="bold"
             android:layout_marginTop="10dp" />
 
+        <!-- Email Input -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -124,6 +101,7 @@
                 android:paddingStart="10dp" />
         </LinearLayout>
 
+        <!-- Phone Label -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -131,6 +109,7 @@
             android:textStyle="bold"
             android:layout_marginTop="10dp" />
 
+        <!-- Phone Input -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -153,24 +132,17 @@
                 android:hint="Enter your phone" />
         </LinearLayout>
 
+        <!-- Update Profile Button -->
         <Button
             android:id="@+id/editProfileButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="UPDATE PROFILE"
+            android:text="Update Profile"
             android:backgroundTint="@color/blue"
             android:textColor="@android:color/white"
             android:layout_marginTop="20dp" />
 
-        <Button
-            android:id="@+id/paymentMethodButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="MAKE A NEW DONATION"
-            android:backgroundTint="@color/blue"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="10dp" />
-
+        <!-- Donation History Button -->
         <Button
             android:id="@+id/donationHistoryButton"
             android:layout_width="match_parent"
@@ -179,5 +151,16 @@
             android:backgroundTint="@color/blue"
             android:textColor="@android:color/white"
             android:layout_marginTop="10dp" />
+
+        <!-- Logout Button -->
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:backgroundTint="#F44336"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="20dp" />
+
     </LinearLayout>
 </ScrollView>
