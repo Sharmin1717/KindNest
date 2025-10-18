@@ -3,7 +3,7 @@ package com.example.kindnestapp2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,8 +34,6 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         mAuth = FirebaseAuth.getInstance();
-
-        // Firebase Realtime Database reference
         databaseRef = FirebaseDatabase.getInstance("https://kindnest-8d2d9-default-rtdb.firebaseio.com/")
                 .getReference("users");
 
@@ -67,8 +65,14 @@ public class SignupActivity extends AppCompatActivity {
                 return;
             }
 
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 Toast.makeText(SignupActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // --- Phone number validation ---
+            if (!phone.matches("\\d{11}")) {
+                Toast.makeText(SignupActivity.this, "Phone number must be exactly 11 digits", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -106,8 +110,8 @@ public class SignupActivity extends AppCompatActivity {
                                                 startActivity(new Intent(SignupActivity.this, LoginActivity.class));
                                                 finish();
                                             } else {
-                                                Exception e = setUserTask.getException();
-                                                String errorMsg = (e != null) ? e.getMessage() : "Unknown error";
+                                                String errorMsg = setUserTask.getException() != null ?
+                                                        setUserTask.getException().getMessage() : "Unknown error";
                                                 Toast.makeText(SignupActivity.this,
                                                         "Error saving user: " + errorMsg,
                                                         Toast.LENGTH_LONG).show();
