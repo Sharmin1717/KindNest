@@ -16,7 +16,7 @@
         android:textSize="14sp"
         android:textColor="@android:color/black" />
 
-    <!-- Removed the "Item" field completely -->
+
 
     <TextView
         android:id="@+id/tvDonationAmount"

@@ -13,7 +13,7 @@ public class SessionManager {
     private SharedPreferences.Editor editor;
     private Context context;
 
-    // Singleton instance
+
     private static SessionManager instance;
 
     public static synchronized SessionManager getInstance(Context context) {
@@ -29,9 +29,7 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    /**
-     * Create login session
-     */
+
     public void createLoginSession(String userId, String userRole) {
         editor.putBoolean(KEY_IS_LOGGED_IN, true);
         editor.putString(KEY_USER_ID, userId);
@@ -39,30 +37,22 @@ public class SessionManager {
         editor.apply();
     }
 
-    /**
-     * Check login status
-     */
+
     public boolean isLoggedIn() {
         return pref.getBoolean(KEY_IS_LOGGED_IN, false);
     }
 
-    /**
-     * Get stored user ID
-     */
+
     public String getUserId() {
         return pref.getString(KEY_USER_ID, null);
     }
 
-    /**
-     * Get stored user role
-     */
+
     public String getUserRole() {
         return pref.getString(KEY_USER_ROLE, null);
     }
 
-    /**
-     * Clear session details
-     */
+
     public void logout() {
         editor.clear();
         editor.apply();

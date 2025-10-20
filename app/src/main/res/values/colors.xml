@@ -5,21 +5,20 @@
     <color name="splash_string">#125B95</color>
     <color name="blue">#367CB5</color>
     <color name="category_bg">#E3F2FD</color>
-    <!-- Primary App Colors (From your Logo) -->
-    <color name="kindnest_primary_blue">#0097D6</color> <!-- The main, vibrant blue -->
-    <color name="kindnest_primary_blue_dark">#0079A8</color> <!-- A darker shade for status bars -->
-    <color name="kindnest_accent_blue">#5BC0EB</color> <!-- A lighter, secondary blue -->
 
-    <!-- Neutral Colors for UI Elements -->
-    <color name="light_background">#F0F4F8</color> <!-- A very soft, slightly blue-tinted gray -->
+    <color name="kindnest_primary_blue">#0097D6</color>
+    <color name="kindnest_primary_blue_dark">#0079A8</color>
+    <color name="kindnest_accent_blue">#5BC0EB</color>
+
+
+    <color name="light_background">#F0F4F8</color>
     <color name="light_card_surface">#FFFFFF</color>
-    <color name="light_text_primary">#1A252E</color> <!-- A dark, almost-black blue -->
+    <color name="light_text_primary">#1A252E</color>
     <color name="light_text_secondary">#5A6978</color>
 
-    <!-- Dark Theme UI Colors -->
-    <color name="dark_background">#121A21</color> <!-- A deep navy blue -->
+    <color name="dark_background">#121A21</color>
     <color name="dark_card_surface">#1E2933</color>
-    <color name="dark_text_primary">#E0E7EE</color> <!-- Soft off-white -->
+    <color name="dark_text_primary">#E0E7EE</color>
     <color name="dark_text_secondary">#94A3B8</color>
     <color name="background_light">#F7F7F7</color>
     <color name="green">#248027</color>

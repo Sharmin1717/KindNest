@@ -33,7 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        // Bind all views from the XML
+
         nameEditText = findViewById(R.id.nameEditText);
         emailEditText = findViewById(R.id.emailEditText);
         phoneEditText = findViewById(R.id.phoneEditText);
@@ -44,9 +44,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
-            // No user is signed in, go back to login
+
             Toast.makeText(this, "Please log in again.", Toast.LENGTH_SHORT).show();
-            // Optional: startActivity(new Intent(this, LoginActivity.class));
+
             finish();
             return;
         }
@@ -54,10 +54,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         loadUserProfile();
 
-        // Back Button Click Listener
+
         backButton.setOnClickListener(v -> finish());
 
-        // Edit Profile Button Click Listener
+        //edit profile
         editProfileButton.setOnClickListener(v -> {
             String name = nameEditText.getText().toString().trim();
             String email = emailEditText.getText().toString().trim();
@@ -72,24 +72,23 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-        // Donation History Button Click Listener
+
         donationHistoryButton.setOnClickListener(v -> {
             Intent intent = new Intent(ProfileActivity.this, DonationHistoryActivity.class);
             startActivity(intent);
         });
 
-        // Logout Button Click Listener
+        //logout
         logoutButton.setOnClickListener(v -> {
-            // Sign out from Firebase
+
             mAuth.signOut();
 
-            // Clear session
             SessionManager.getInstance(ProfileActivity.this).logout();
 
-            // Show success message
+
             Toast.makeText(ProfileActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
 
-            // Redirect to login screen
+
             Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -116,10 +115,10 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateProfile(String name, String email, String phone) {
-        // Create updated User object
+
         User updatedUser = new User(name, email, phone, "user");
 
-        // Update the user data in Firebase
+
         mDatabase.child("users").child(currentUserId).setValue(updatedUser)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

@@ -72,7 +72,7 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return displayList.size();
     }
 
-    // --- CATEGORY ICONS ---
+    //category
     private int getIconForCategory(String categoryName) {
         switch (categoryName.toLowerCase()) {
             case "health_and_medical": return R.drawable.healthicon;
@@ -88,10 +88,9 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    // --- SUBCATEGORY ICONS ---
     private int getIconForSubcategory(String subCategoryName) {
         switch (subCategoryName.toLowerCase()) {
-            // Education & Youth
+            // education and youth
             case "sponsor_a_childs_education_annual":
             case "primary_schooling_for_a_child":
             case "school_for_underprivileged_children": return R.drawable.icon_school;
@@ -108,7 +107,7 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case "non_formal_education": return R.drawable.icon_literacy;
             case "extracurricular_activities_fund": return R.drawable.icon_activities;
 
-            // Food & Nutrition
+            //food
             case "one_taka_meal_program":
             case "daily_meals_for_the_underprivileged": return R.drawable.icon_food_meal;
             case "emergency_food_packages":
@@ -120,13 +119,13 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case "nutritional_support":
             case "nutritional_support_and_meals": return R.drawable.icon_nutrition;
 
-            // Health & Medical
+            //health
             case "maternal_and_child_health_program": return R.drawable.icon_mother_child;
             case "healthcare_for_street_children":
             case "medical_camps_in_disaster_areas": return R.drawable.icon_medical_kit;
             case "community_health_worker_training": return R.drawable.icon_health_team;
             case "tuberculosis_and_malaria_control": return R.drawable.icon_disease_control;
-            case "eye_care_and_catact_surgery":
+            case "eye_care_and_cataract_surgery":
             case "free_eye_camps": return R.drawable.icon_eye;
             case "public_health_awareness_campaigns": return R.drawable.icon_awareness;
             case "sanitation_and_hygiene_kits_wash":
@@ -134,13 +133,13 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case "hygiene_and_sanitation_kits": return R.drawable.icon_hygien;
             case "clean_drinking_water_projects": return R.drawable.icon_water_drop;
 
-            // Livelihood & Poverty
+            //livelihood
             case "microfinance_and_small_business_loans": return R.drawable.icon_microfinance;
             case "agricultural_training_for_farmers": return R.drawable.icon_agriculture;
             case "skills_development_for_youth": return R.drawable.icon_skills;
             case "ultra_poor_graduation_program": return R.drawable.icon_graduation;
 
-            // Shelter & Relief
+            //shelter
             case "build_a_home_for_a_homeless_family": return R.drawable.icon_home_build;
             case "winter_blanket_drive":
             case "winter_clothing_and_blanket_drive": return R.drawable.icon_winter_blanket;
@@ -148,7 +147,7 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case "emergency_shelter_tents": return R.drawable.icon_emergency_tent;
             case "sanitation_facilities_for_the_displaced": return R.drawable.icon_sanitation;
 
-            // Women & Human Rights
+            //human rights
             case "vocational_skills_training_tailoring": return R.drawable.icon_sewing;
             case "support_for_female_entrepreneurs": return R.drawable.icon_business_woman;
             case "awareness_against_domestic_violence": return R.drawable.icon_stop_violence;
@@ -156,13 +155,13 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case "rights_advocacy_for_minorities": return R.drawable.icon_advocacy;
             case "support_for_old_age_homes": return R.drawable.icon_elderly_care;
 
-            // Environment
+            //environment
             case "tree_plantation_drives": return R.drawable.icon_tree_plant;
             case "river_and_beach_cleanup_projects": return R.drawable.icon_cleanup;
             case "wildlife_conservation_awareness": return R.drawable.icon_wildlife;
             case "waste_management_programs": return R.drawable.icon_waste_management;
 
-            // Children
+            //children
             case "drop_in_centers_for_street_children": return R.drawable.icon_dropin_center;
             case "rehabilitation_and_counseling": return R.drawable.icon_counseling;
             case "protection_from_child_labor": return R.drawable.icon_child_protection;
@@ -172,7 +171,6 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    //CATEGORY VIEWHOLDER
     class CategoryViewHolder extends RecyclerView.ViewHolder {
         ImageView categoryIcon;
         TextView categoryTitle;
@@ -190,7 +188,7 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    //SUBCATEGORY VIEWHOLDER
+
     class SubCategoryViewHolder extends RecyclerView.ViewHolder {
         ImageView subCategoryIcon;
         TextView subCategoryName;

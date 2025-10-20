@@ -34,10 +34,8 @@ public class UserManagementActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_management);
 
-        // Initialize Firebase Database
         usersRef = FirebaseDatabase.getInstance().getReference("users");
 
-        // Initialize RecyclerView
         recyclerView = findViewById(R.id.usersRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -45,7 +43,6 @@ public class UserManagementActivity extends AppCompatActivity {
         adapter = new UserAdapter(userList);
         recyclerView.setAdapter(adapter);
 
-        // Load users from Firebase
         loadUsers();
     }
 
@@ -71,7 +68,6 @@ public class UserManagementActivity extends AppCompatActivity {
         });
     }
 
-    // User Adapter for RecyclerView
     private class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
         private List<User> users;
@@ -97,11 +93,10 @@ public class UserManagementActivity extends AppCompatActivity {
             boolean isApproved = user.isApproved();
             holder.statusTextView.setText(isApproved ? "Approved" : "Pending");
 
-            // Set button text based on approval status
             holder.approveButton.setText(isApproved ? "Remove Approval" : "Approve");
 
             holder.approveButton.setOnClickListener(v -> {
-                // Toggle approval status
+
                 boolean newStatus = !isApproved;
                 usersRef.child(user.getUid()).child("approved").setValue(newStatus)
                         .addOnSuccessListener(aVoid -> {

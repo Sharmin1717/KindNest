@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Title -->
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:padding="16dp"
         android:background="#E0E0E0"/>
 
-    <!-- RecyclerView for listing donations -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewDonations"
         android:layout_width="match_parent"

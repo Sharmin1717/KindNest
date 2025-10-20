@@ -57,7 +57,6 @@ public class DonationActivity extends AppCompatActivity {
             return;
         }
 
-        // Populate displayList with categories and subcategories
         for (Map.Entry<String, Map<String, Boolean>> categoryEntry : categories.entrySet()) {
             displayList.add(categoryEntry.getKey());
             Map<String, Boolean> subCategories = categoryEntry.getValue();
@@ -68,7 +67,7 @@ public class DonationActivity extends AppCompatActivity {
             }
         }
 
-        // Fix: pass ngoName as first argument
+
         donationAdapter = new DonationAdapter(ngoName, displayList, item -> showAmountDialog(item));
         recyclerView.setAdapter(donationAdapter);
     }
@@ -80,7 +79,7 @@ public class DonationActivity extends AppCompatActivity {
 
         EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        input.setHint("Amount in BDT"); // hint shows BDT, input is still numeric only
+        input.setHint("Amount in BDT");
         builder.setView(input);
 
         builder.setPositiveButton("Proceed to Pay", (dialog, which) -> {
@@ -90,7 +89,7 @@ public class DonationActivity extends AppCompatActivity {
                 return;
             }
             try {
-                double amount = Double.parseDouble(amountStr); // numeric only
+                double amount = Double.parseDouble(amountStr);
                 Intent intent = new Intent(DonationActivity.this, DonationFormActivity.class);
                 intent.putExtra("NGO_NAME", ngoName);
                 intent.putExtra("SUBCATEGORY", item.name.replace('_', ' '));

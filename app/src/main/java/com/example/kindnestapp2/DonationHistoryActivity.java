@@ -18,7 +18,6 @@ import java.util.List;
 
 public class DonationHistoryActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    // CHANGE #1: Use the new adapter
     private DonationHistoryAdapter donationAdapter;
     private List<Donation> donationList;
     private DatabaseReference databaseReference;
@@ -33,14 +32,12 @@ public class DonationHistoryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         donationList = new ArrayList<>();
 
-        // CHANGE #2: Instantiate the new adapter. The constructor now matches!
         donationAdapter = new DonationHistoryAdapter(donationList);
 
         recyclerView.setAdapter(donationAdapter);
 
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
-            // Handle case where user is not logged in
             Toast.makeText(this, "You need to be logged in to see history.", Toast.LENGTH_SHORT).show();
             finish();
             return;

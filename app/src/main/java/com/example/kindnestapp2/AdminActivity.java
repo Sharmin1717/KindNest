@@ -34,10 +34,10 @@ public class AdminActivity extends AppCompatActivity {
                 startActivity(new Intent(AdminActivity.this, DonationManagementActivity.class))
         );
 
-        // Open acknowledged donations
+
         acknowledgedDonationsCard.setOnClickListener(v -> {
             Intent intent = new Intent(AdminActivity.this, AcknowledgedDonationsActivity.class);
-            intent.putExtra("IS_ADMIN", true); // important!
+            intent.putExtra("IS_ADMIN", true);
             startActivity(intent);
         });
 

@@ -11,18 +11,16 @@ public class Donation {
     private long timestamp;
     private String userId;
     private String transactionId;
-    private String status; // "pending" or "acknowledged"
+    private String status;
     private String category;
     private String id;
     private boolean seenByUser;
 
-    // Required empty constructor for Firebase
     public Donation() {
         this.status = "pending";
         this.seenByUser = false;
     }
 
-    // When creating a Donation programmatically, default it to pending (user made donation)
     public Donation(String ngoName, String item, double amount, long timestamp, String userId, String transactionId, String category) {
         this.ngoName = ngoName;
         this.item = item;
@@ -31,11 +29,11 @@ public class Donation {
         this.userId = userId;
         this.transactionId = transactionId;
         this.category = category;
-        this.status = "pending";     // IMPORTANT: start as pending
-        this.seenByUser = false;     // user hasn't seen acknowledgment yet
+        this.status = "pending";
+        this.seenByUser = false;
     }
 
-    // --- Getters and Setters ---
+
     public String getNgoName() { return ngoName; }
     public void setNgoName(String ngoName) { this.ngoName = ngoName; }
 
@@ -66,7 +64,6 @@ public class Donation {
     public boolean isSeenByUser() { return seenByUser; }
     public void setSeenByUser(boolean seenByUser) { this.seenByUser = seenByUser; }
 
-    // Helper method to get formatted date
     public String getDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         return sdf.format(new Date(timestamp));

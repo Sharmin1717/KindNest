@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class AdminLoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private static final String ADMIN_EMAIL = "admin@kindnest.com"; // use your actual Firebase admin email
+    private static final String ADMIN_EMAIL = "admin@kindnest.com"; //actual firebase admin email
     private EditText emailEditText, passwordEditText;
     private Button loginButton;
 
@@ -36,14 +36,14 @@ public class AdminLoginActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         boolean isLoggedIn = prefs.getBoolean(KEY_IS_LOGGED_IN, false);
 
-        // If admin already logged in, skip login screen
+
         if (isLoggedIn && mAuth.getCurrentUser() != null) {
             startActivity(new Intent(AdminLoginActivity.this, AdminActivity.class));
             finish();
             return;
         }
 
-        // Pre-fill admin email and disable editing
+
         emailEditText.setText(ADMIN_EMAIL);
         emailEditText.setEnabled(false);
 
@@ -56,7 +56,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                 return;
             }
 
-            // Authenticate admin via Firebase Auth
+            //authentication admin
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {

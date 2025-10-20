@@ -50,7 +50,7 @@ public class AcknowledgedDonationsActivity extends AppCompatActivity {
 
         donationsRef = FirebaseDatabase.getInstance().getReference("donations");
 
-        // ✅ Get role from intent
+        //get role from intent
         if (getIntent() != null && getIntent().hasExtra("IS_ADMIN")) {
             isAdmin = getIntent().getBooleanExtra("IS_ADMIN", false);
         }
@@ -79,7 +79,7 @@ public class AcknowledgedDonationsActivity extends AppCompatActivity {
 
                         Log.d("ACK_DEBUG", "Donation ID: " + donation.getId() + ", status: '" + status + "'");
 
-                        // ✅ Add donation if acknowledged
+                        //Add donation if acknowledged
                         if ("acknowledged".equalsIgnoreCase(status)) {
                             if (isAdmin || currentUserId.equals(donation.getUserId())) {
                                 donationList.add(donation);

@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
 
     private ProgressBar progressBar;
 
-    // 🔔 Notifications
+
     private ImageView notificationBtn;
     private DatabaseReference donationsRef;
     private FirebaseAuth auth;
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
         setContentView(R.layout.activity_main);
 
         ImageView profileBtn = findViewById(R.id.profile_button);
-        notificationBtn = findViewById(R.id.notification_button); // 🔔
+        notificationBtn = findViewById(R.id.notification_button);
         progressBar = findViewById(R.id.progress_bar);
         ngoRecyclerView = findViewById(R.id.ngo_recycler_view);
         ngoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -59,23 +59,22 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
 
         ngoRef = FirebaseDatabase.getInstance().getReference("ngos");
 
-        // Firebase setup for donations
+
         auth = FirebaseAuth.getInstance();
         donationsRef = FirebaseDatabase.getInstance().getReference("donations");
 
         profileBtn.setOnClickListener(v ->
                 startActivity(new Intent(this, ProfileActivity.class)));
 
-        //  Notification button click → open acknowledged donations
+
         notificationBtn.setOnClickListener(v -> markAcknowledgedAsSeenAndOpen());
 
-        // Listen for new acknowledged donations
         listenForAcknowledgedDonations();
 
         loadNGOsFromFirebase();
     }
 
-    /** Listen for acknowledged donations that the user hasn’t seen yet */
+
     private void listenForAcknowledgedDonations() {
         if (auth.getCurrentUser() == null) return;
         String userId = auth.getCurrentUser().getUid();
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
                             }
                         }
 
-                        // Update bell icon
+
                         notificationBtn.setImageResource(
                                 hasNewAcknowledged ? R.drawable.ic_notifications_new : R.drawable.ic_notifications
                         );
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
                 });
     }
 
-    // Mark all acknowledged donations as seen and open the AcknowledgedDonationsActivity
+
     private void markAcknowledgedAsSeenAndOpen() {
         if (auth.getCurrentUser() == null) return;
         String userId = auth.getCurrentUser().getUid();
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
                             }
                         }
 
-                        // Open the acknowledged donations screen
+
                         startActivity(new Intent(MainActivity.this, AcknowledgedDonationsActivity.class));
                     }
 
@@ -134,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
                 });
     }
 
-    //Load NGO list from Firebase
+    //Load
     private void loadNGOsFromFirebase() {
         progressBar.setVisibility(View.VISIBLE);
         ngoRecyclerView.setVisibility(View.GONE);
@@ -163,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
         });
     }
 
-    /** Show NGO details in bottom sheet */
+  //ngo details
     @Override
     public void onNGOClick(NGO ngo) {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);

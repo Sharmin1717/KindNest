@@ -12,7 +12,7 @@
         android:padding="16dp"
         tools:ignore="WebViewLayout">
 
-        <!-- Title -->
+
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:textStyle="bold"
             android:paddingBottom="16dp" />
 
-        <!-- Donation Amount -->
+
         <EditText
             android:id="@+id/amountEt"
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:inputType="numberDecimal"
             android:minHeight="48dp" />
 
-        <!-- Mobile Number -->
+
         <EditText
             android:id="@+id/mobileEt"
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:inputType="phone"
             android:minHeight="48dp" />
 
-        <!-- Purpose -->
+
         <EditText
             android:id="@+id/purposeEt"
             android:layout_width="match_parent"
@@ -49,15 +49,14 @@
             android:inputType="text"
             android:minHeight="48dp" />
 
-        <!-- UddoktaPay Demo Button -->
+
         <Button
             android:id="@+id/payBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Donate via UddoktaPay"
+            android:text="Donate"
             android:layout_marginTop="16dp" />
 
-        <!-- bKash Dummy Payment -->
         <LinearLayout
             android:id="@+id/dummyBkashBtn"
             android:layout_width="match_parent"
@@ -79,10 +78,10 @@
                 android:layout_height="wrap_content"
                 android:text="Donate via bKash"
                 android:textSize="16sp"
-                android:paddingStart="12dp"/>
+                android:paddingStart="12dp" />
         </LinearLayout>
 
-        <!-- Nagad Dummy Payment -->
+
         <LinearLayout
             android:id="@+id/dummyNagadBtn"
             android:layout_width="match_parent"
@@ -104,10 +103,10 @@
                 android:layout_height="wrap_content"
                 android:text="Donate via Nagad"
                 android:textSize="16sp"
-                android:paddingStart="12dp"/>
+                android:paddingStart="12dp" />
         </LinearLayout>
 
-        <!-- Rocket Dummy Payment -->
+
         <LinearLayout
             android:id="@+id/dummyRocketBtn"
             android:layout_width="match_parent"
@@ -129,10 +128,9 @@
                 android:layout_height="wrap_content"
                 android:text="Donate via Rocket"
                 android:textSize="16sp"
-                android:paddingStart="12dp"/>
+                android:paddingStart="12dp" />
         </LinearLayout>
 
-        <!-- WebView for UddoktaPay -->
         <WebView
             android:id="@+id/paymentWebView"
             android:layout_width="match_parent"

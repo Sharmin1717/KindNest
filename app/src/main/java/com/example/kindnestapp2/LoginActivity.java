@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
                         if (user.isEmailVerified()) {
-                            // Email is verified
+
                             userRef.child(user.getUid()).get().addOnSuccessListener(snapshot -> {
                                 if (snapshot.exists()) {
                                     String role = snapshot.child("role").getValue(String.class);
@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             });
                         } else {
-                            // Email not verified
+
                             Toast.makeText(LoginActivity.this,
                                     "Please verify your email before logging in.",
                                     Toast.LENGTH_LONG).show();

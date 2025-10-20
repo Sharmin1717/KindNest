@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class NGO implements Serializable {
 
-    private String id;  // <-- Firebase key
+    private String id;
     private String name;
     private String logoUrl;
     private String focusArea;
@@ -17,7 +17,7 @@ public class NGO implements Serializable {
 
     public NGO() {}
 
-    // Getters
+
     public String getId() { return id; }
     public String getName() { return name; }
     public String getLogoUrl() { return logoUrl; }
@@ -28,7 +28,6 @@ public class NGO implements Serializable {
     public String getAddress() { return address; }
     public Map<String, Map<String, Boolean>> getCategories() { return categories; }
 
-    // Setters
     public void setId(String id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setLogoUrl(String logoUrl) { this.logoUrl = logoUrl; }

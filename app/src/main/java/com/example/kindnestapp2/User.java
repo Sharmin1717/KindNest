@@ -6,12 +6,11 @@ public class User {
     public String phone;
     public String role;
     public String profileImageUrl;
-    public boolean approved; // For admin to approve users
-    private String uid; // To store Firebase UID
+    public boolean approved; //for admin to approve users
+    private String uid;
 
-    // A public no-argument constructor is required for Firebase
     public User() {
-        this.approved = false; // Default to not approved
+        this.approved = false;
     }
 
     public User(String username, String email, String phone, String role) {
@@ -19,12 +18,12 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.role = role;
-        this.profileImageUrl = ""; // Default to an empty string
-        this.approved = false; // Default to not approved
+        this.profileImageUrl = "";
+        this.approved = false;
     }
 
-    //Getters and Setters
-    public String getName() { return username; } // For compatibility with UserManagementActivity
+
+    public String getName() { return username; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 

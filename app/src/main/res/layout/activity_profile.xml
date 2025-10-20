@@ -13,7 +13,7 @@
         android:gravity="center_horizontal"
         android:padding="20dp">
 
-        <!-- Back Button -->
+
         <ImageView
             android:id="@+id/backButton"
             android:layout_width="48dp"
@@ -23,7 +23,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Back" />
 
-        <!-- Logo -->
+
         <ImageView
             android:id="@+id/logoImageView"
             android:layout_width="100dp"
@@ -31,7 +31,7 @@
             android:src="@drawable/kindnestlogo"
             android:layout_marginTop="10dp" />
 
-        <!-- Profile Title -->
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             android:textStyle="bold"
             android:layout_marginTop="10dp" />
 
-        <!-- Name Label -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             android:textStyle="bold"
             android:layout_marginTop="10dp" />
 
-        <!-- Name Input -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                 android:hint="Enter your name" />
         </LinearLayout>
 
-        <!-- Email Label -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
             android:textStyle="bold"
             android:layout_marginTop="10dp" />
 
-        <!-- Email Input -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                 android:paddingStart="10dp" />
         </LinearLayout>
 
-        <!-- Phone Label -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
             android:textStyle="bold"
             android:layout_marginTop="10dp" />
 
-        <!-- Phone Input -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,7 +132,6 @@
                 android:hint="Enter your phone" />
         </LinearLayout>
 
-        <!-- Update Profile Button -->
         <Button
             android:id="@+id/editProfileButton"
             android:layout_width="match_parent"
@@ -142,7 +141,7 @@
             android:textColor="@android:color/white"
             android:layout_marginTop="20dp" />
 
-        <!-- Donation History Button -->
+
         <Button
             android:id="@+id/donationHistoryButton"
             android:layout_width="match_parent"
@@ -152,7 +151,7 @@
             android:textColor="@android:color/white"
             android:layout_marginTop="10dp" />
 
-        <!-- Logout Button -->
+
         <Button
             android:id="@+id/logoutButton"
             android:layout_width="match_parent"

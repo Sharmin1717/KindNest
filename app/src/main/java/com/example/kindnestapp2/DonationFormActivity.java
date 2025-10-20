@@ -9,11 +9,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.help5g.uddoktapaysdk.UddoktaPay;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DonationFormActivity extends AppCompatActivity {
 
@@ -27,6 +32,13 @@ public class DonationFormActivity extends AppCompatActivity {
 
     private String ngoName, subCategory;
     private double amount;
+
+    //sandboxcredentials
+    private static final String API_KEY = "982d381360a69d419689740d9f2e26ce36fb7a50"; // Sandbox public key
+    private static final String CHECKOUT_URL = "https://sandbox.uddoktapay.com/api/checkout-v2";
+    private static final String VERIFY_PAYMENT_URL = "https://sandbox.uddoktapay.com/api/verify-payment";
+    private static final String REDIRECT_URL = "https://example.com/success"; // Dummy redirect
+    private static final String CANCEL_URL = "https://example.com/cancel";   // Dummy cancel
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,11 +67,12 @@ public class DonationFormActivity extends AppCompatActivity {
 
         fetchUserPhoneNumber();
 
-        View.OnClickListener clickListener = v -> handleDonation();
-        findViewById(R.id.payBtn).setOnClickListener(clickListener);
-        dummyBkashBtn.setOnClickListener(clickListener);
-        dummyNagadBtn.setOnClickListener(clickListener);
-        dummyRocketBtn.setOnClickListener(clickListener);
+        findViewById(R.id.payBtn).setOnClickListener(v -> initiateUddoktaPayPayment());
+
+        //bkash/nagad/rocket
+        dummyBkashBtn.setOnClickListener(v -> showConfirmDialog("bKash"));
+        dummyNagadBtn.setOnClickListener(v -> showConfirmDialog("Nagad"));
+        dummyRocketBtn.setOnClickListener(v -> showConfirmDialog("Rocket"));
     }
 
     private void fetchUserPhoneNumber() {
@@ -78,7 +91,8 @@ public class DonationFormActivity extends AppCompatActivity {
         }
     }
 
-    private void handleDonation() {
+
+    private void showConfirmDialog(String method) {
         String enteredAmount = amountEt.getText().toString().trim();
         String mobile = mobileEt.getText().toString().trim();
         String purpose = purposeEt.getText().toString().trim();
@@ -88,10 +102,70 @@ public class DonationFormActivity extends AppCompatActivity {
             return;
         }
 
-        // Save donation with status "Pending"
-        saveDonationToFirebase(Double.parseDouble(enteredAmount), purpose, "TXN_" + System.currentTimeMillis());
-        Toast.makeText(this, "Donation Successful 💙", Toast.LENGTH_LONG).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm " + method + " Donation");
+        builder.setMessage("NGO: " + ngoName +
+                "\nAmount: " + enteredAmount + " BDT" +
+                "\nMobile: " + mobile +
+                "\nPurpose: " + purpose +
+                "\n\nDo you want to confirm this donation?");
+
+        builder.setPositiveButton("Confirm", (dialog, which) -> {
+            saveDonationToFirebase(Double.parseDouble(enteredAmount), purpose, "TXN_" + System.currentTimeMillis());
+            Toast.makeText(this, "Donation Successful 💙", Toast.LENGTH_LONG).show();
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.show();
     }
+
+    //uddoktapay(sandbox)
+    private void initiateUddoktaPayPayment() {
+        String enteredAmount = amountEt.getText().toString().trim();
+        String mobile = mobileEt.getText().toString().trim();
+        String purpose = purposeEt.getText().toString().trim();
+
+        if (enteredAmount.isEmpty() || mobile.isEmpty() || purpose.isEmpty()) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        paymentWebView.setVisibility(View.VISIBLE);
+
+        Map<String, String> metadataMap = new HashMap<>();
+        metadataMap.put("donor_mobile", mobile);
+        metadataMap.put("donation_purpose", purpose);
+
+        UddoktaPay.PaymentCallback callback = (status, fullName, userEmail, paidAmount,
+                                               invoiceId, paymentMethod, senderNumber,
+                                               transactionId, date, metadataValues,
+                                               fee, chargeAmount) -> runOnUiThread(() -> {
+            if ("COMPLETED".equals(status)) {
+                saveDonationToFirebase(Double.parseDouble(enteredAmount), purpose, transactionId);
+                Toast.makeText(DonationFormActivity.this, "Donation Successful! Thank you 💙", Toast.LENGTH_LONG).show();
+                paymentWebView.setVisibility(View.GONE);
+            } else if ("PENDING".equals(status)) {
+                Toast.makeText(DonationFormActivity.this, "Donation Pending...", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(DonationFormActivity.this, "Donation Failed!", Toast.LENGTH_SHORT).show();
+                paymentWebView.setVisibility(View.GONE);
+            }
+        });
+
+        UddoktaPay uddoktapay = new UddoktaPay(paymentWebView, callback);
+        uddoktapay.loadPaymentForm(
+                API_KEY,
+                ngoName,
+                "donor@email.com",
+                enteredAmount,
+                CHECKOUT_URL,
+                VERIFY_PAYMENT_URL,
+                REDIRECT_URL,
+                CANCEL_URL,
+                metadataMap
+        );
+    }
+
 
     private void saveDonationToFirebase(double amount, String purpose, String transactionId) {
         String userId = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : "anonymous";
@@ -108,7 +182,7 @@ public class DonationFormActivity extends AppCompatActivity {
                     subCategory
             );
             donation.setId(donationId);
-            donation.setStatus("pending"); // Default status
+            donation.setStatus("pending");
 
             donationsRef.child(donationId).setValue(donation)
                     .addOnSuccessListener(aVoid ->

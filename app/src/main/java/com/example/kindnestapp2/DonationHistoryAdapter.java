@@ -61,7 +61,7 @@ public class DonationHistoryAdapter extends RecyclerView.Adapter<DonationHistory
             itemDonated.setText("Donated for: " + donation.getItem());
             amount.setText("Amount: BDT " + String.format(Locale.US, "%.2f", donation.getAmount()));
 
-            // Date formatting
+            //date formatting
             if (donation.getTimestamp() > 0) {
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
                 date.setText("Date: " + sdf.format(new Date(donation.getTimestamp())));
@@ -69,18 +69,17 @@ public class DonationHistoryAdapter extends RecyclerView.Adapter<DonationHistory
                 date.setText("Date not available");
             }
 
-            // ✅ Show actual status dynamically
+
             String statusText = donation.getStatus() != null ? donation.getStatus() : "Pending";
             status.setText("Status: " + capitalize(statusText));
 
-            // Set color for better UI
+
             if ("acknowledged".equalsIgnoreCase(statusText)) {
-                status.setTextColor(0xFF4CAF50); // Green
+                status.setTextColor(0xFF4CAF50);
             } else {
-                status.setTextColor(0xFFFF9800); // Orange for pending
+                status.setTextColor(0xFFFF9800);
             }
 
-            // Details dialog
             viewDetailsButton.setOnClickListener(v -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
                 builder.setTitle("Donation Details");

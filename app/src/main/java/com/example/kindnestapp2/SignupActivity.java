@@ -52,7 +52,7 @@ public class SignupActivity extends AppCompatActivity {
             final String password = passwordEditText.getText().toString().trim();
             final String confirmPassword = confirmPasswordEditText.getText().toString().trim();
 
-            // Basic validation
+
             if (TextUtils.isEmpty(username) || TextUtils.isEmpty(email) ||
                     TextUtils.isEmpty(phone) || TextUtils.isEmpty(password) ||
                     TextUtils.isEmpty(confirmPassword)) {
@@ -70,7 +70,7 @@ public class SignupActivity extends AppCompatActivity {
                 return;
             }
 
-            // Phone number validation
+
             if (!phone.matches("\\d{11}")) {
                 Toast.makeText(SignupActivity.this, "Phone number must be exactly 11 digits", Toast.LENGTH_SHORT).show();
                 return;
@@ -88,18 +88,18 @@ public class SignupActivity extends AppCompatActivity {
 
             final String role = email.equalsIgnoreCase("admin@kindnest.com") ? "admin" : "user";
 
-            // Create Firebase user
+
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
-                        // Send verification email
+                        //verification email
                         user.sendEmailVerification().addOnCompleteListener(verifyTask -> {
                             if (verifyTask.isSuccessful()) {
                                 final String userId = user.getUid();
                                 User newUser = new User(username, email, phone, role);
 
-                                // Save user info in database
+                                //save user info
                                 databaseRef.child(userId).setValue(newUser)
                                         .addOnCompleteListener(setUserTask -> {
                                             if (setUserTask.isSuccessful()) {

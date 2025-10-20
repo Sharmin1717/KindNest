@@ -19,7 +19,7 @@
         android:paddingHorizontal="16dp"
         android:gravity="center_vertical">
 
-        <!-- This is the new ImageView for your colorful icon -->
+
         <ImageView
             android:id="@+id/subcategory_icon"
             android:layout_width="32dp"
@@ -30,7 +30,7 @@
             tools:src="@drawable/icon_school"
             android:contentDescription="Donation Type Icon" />
 
-        <!-- This TextView is now positioned next to the icon -->
+
         <TextView
             android:id="@+id/subcategory_name"
             android:layout_width="match_parent"

@@ -8,7 +8,6 @@
     android:background="?android:attr/colorBackground"
     tools:context=".DonationActivity">
 
-    <!-- This AppBar provides the top bar with the back arrow and title -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +23,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- This RecyclerView will display the list of categories and subcategories -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/donation_recycler_view"
         android:layout_width="match_parent"
