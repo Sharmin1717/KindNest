@@ -108,7 +108,7 @@ public class DonationFormActivity extends AppCompatActivity {
                     subCategory
             );
             donation.setId(donationId);
-            donation.setStatus("pending"); // ✅ Default status
+            donation.setStatus("pending"); // Default status
 
             donationsRef.child(donationId).setValue(donation)
                     .addOnSuccessListener(aVoid ->

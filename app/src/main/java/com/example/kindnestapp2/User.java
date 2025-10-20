@@ -1,7 +1,6 @@
 package com.example.kindnestapp2;
 
 public class User {
-    // These variable names must exactly match the keys in your Firebase Realtime Database
     public String username;
     public String email;
     public String phone;
@@ -24,7 +23,7 @@ public class User {
         this.approved = false; // Default to not approved
     }
 
-    // --- Getters and Setters ---
+    //Getters and Setters
     public String getName() { return username; } // For compatibility with UserManagementActivity
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }

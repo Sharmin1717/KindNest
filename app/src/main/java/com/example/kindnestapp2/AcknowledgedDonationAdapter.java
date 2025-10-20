@@ -36,14 +36,14 @@ public class AcknowledgedDonationAdapter extends RecyclerView.Adapter<Acknowledg
         holder.tvDonationCategory.setText("Category: " + safe(donation.getCategory()));
         holder.tvDonationDate.setText("Date: " + safe(donation.getDate()));
         holder.tvDonationStatus.setText("Status: " + safe(donation.getStatus()));
-        holder.tvDonationStatus.setTextColor(0xFF4CAF50);
+        holder.tvDonationStatus.setTextColor(0xFF4CAF50); // Green for acknowledged
 
         String paymentStatus = (donation.getTransactionId() != null && !donation.getTransactionId().isEmpty())
                 ? "Completed" : "Pending";
         holder.tvPaymentStatus.setText("Payment: " + paymentStatus);
         holder.tvPaymentStatus.setTextColor(paymentStatus.equals("Completed") ? 0xFF4CAF50 : 0xFFFFA000);
 
-        // Hide Acknowledge button (not needed here)
+        // Hide acknowledge button (not needed here)
         holder.btnAcknowledge.setVisibility(View.GONE);
     }
 

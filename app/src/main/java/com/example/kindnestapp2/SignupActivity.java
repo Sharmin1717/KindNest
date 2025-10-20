@@ -70,7 +70,7 @@ public class SignupActivity extends AppCompatActivity {
                 return;
             }
 
-            // --- Phone number validation ---
+            // Phone number validation
             if (!phone.matches("\\d{11}")) {
                 Toast.makeText(SignupActivity.this, "Phone number must be exactly 11 digits", Toast.LENGTH_SHORT).show();
                 return;

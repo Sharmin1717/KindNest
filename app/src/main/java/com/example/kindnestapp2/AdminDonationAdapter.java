@@ -9,15 +9,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.List;
 import java.util.Locale;
 
 public class AdminDonationAdapter extends RecyclerView.Adapter<AdminDonationAdapter.DonationViewHolder> {
 
-    private List<Donation> donationList;
-    private OnDonationActionListener listener;
+    private final List<Donation> donationList;
+    private final OnDonationActionListener listener;
 
     public interface OnDonationActionListener {
         void onAcknowledgeClicked(Donation donation);
@@ -31,7 +29,8 @@ public class AdminDonationAdapter extends RecyclerView.Adapter<AdminDonationAdap
     @NonNull
     @Override
     public DonationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_donation_admin, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_donation_admin, parent, false);
         return new DonationViewHolder(view);
     }
 
@@ -39,44 +38,25 @@ public class AdminDonationAdapter extends RecyclerView.Adapter<AdminDonationAdap
     public void onBindViewHolder(@NonNull DonationViewHolder holder, int position) {
         Donation donation = donationList.get(position);
 
-        holder.tvDonationId.setText("ID: " + (donation.getId() == null ? "-" : donation.getId()));
-
-        // Format amount in BDT
-        holder.tvDonationAmount.setText("Amount: ৳" + String.format(Locale.US, "%.2f", donation.getAmount()));
-        holder.tvDonationCategory.setText("Category: " + (donation.getCategory() == null ? "-" : donation.getCategory()));
+        holder.tvDonationId.setText("ID: " + safe(donation.getId()));
+        holder.tvDonationAmount.setText(donation.getNgoName() + " - ৳" + String.format(Locale.US, "%.2f", donation.getAmount()));
+        holder.tvDonationCategory.setText("Category: " + safe(donation.getCategory()));
         holder.tvDonationDate.setText("Date: " + donation.getDate());
 
-        // Status & color
-        String status = donation.getStatus() != null ? donation.getStatus() : "pending";
-        if ("pending".equalsIgnoreCase(status)) {
-            holder.tvDonationStatus.setText("Status: Pending");
-            holder.tvDonationStatus.setTextColor(0xFFFFA000);
-        } else if ("acknowledged".equalsIgnoreCase(status)) {
-            holder.tvDonationStatus.setText("Status: Acknowledged");
-            holder.tvDonationStatus.setTextColor(0xFF4CAF50);
-        } else {
-            holder.tvDonationStatus.setText("Status: " + status);
-            holder.tvDonationStatus.setTextColor(0xFF000000);
-        }
+        String status = safe(donation.getStatus());
+        holder.tvDonationStatus.setText("Status: " + status);
+        holder.tvDonationStatus.setTextColor(status.equalsIgnoreCase("acknowledged") ? 0xFF4CAF50 : 0xFFFFA000);
 
-        // Payment status
         String paymentStatus = donation.getTransactionId() != null && !donation.getTransactionId().isEmpty()
                 ? "Completed" : "Pending";
         holder.tvPaymentStatus.setText("Payment: " + paymentStatus);
         holder.tvPaymentStatus.setTextColor(paymentStatus.equals("Completed") ? 0xFF4CAF50 : 0xFFFFA000);
 
-        // Acknowledge button behavior
         if ("acknowledged".equalsIgnoreCase(status)) {
             holder.btnAcknowledge.setVisibility(View.GONE);
         } else {
             holder.btnAcknowledge.setVisibility(View.VISIBLE);
             holder.btnAcknowledge.setOnClickListener(v -> {
-                // ✅ Update Firebase status to acknowledged
-                FirebaseDatabase.getInstance().getReference("donations")
-                        .child(donation.getId())
-                        .child("status")
-                        .setValue("acknowledged");
-
                 if (listener != null) listener.onAcknowledgeClicked(donation);
             });
         }
@@ -87,9 +67,12 @@ public class AdminDonationAdapter extends RecyclerView.Adapter<AdminDonationAdap
         return donationList == null ? 0 : donationList.size();
     }
 
+    private String safe(String text) {
+        return (text == null || text.trim().isEmpty()) ? "-" : text;
+    }
+
     public static class DonationViewHolder extends RecyclerView.ViewHolder {
-        TextView tvDonationId, tvDonationAmount, tvDonationCategory,
-                tvDonationDate, tvDonationStatus, tvPaymentStatus;
+        TextView tvDonationId, tvDonationAmount, tvDonationCategory, tvDonationDate, tvDonationStatus, tvPaymentStatus;
         Button btnAcknowledge;
 
         public DonationViewHolder(@NonNull View itemView) {

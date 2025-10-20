@@ -46,12 +46,12 @@ public class DonationManagementActivity extends AppCompatActivity {
     private void loadDonations() {
         donationsRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 donationList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Donation donation = snapshot.getValue(Donation.class);
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Donation donation = ds.getValue(Donation.class);
                     if (donation != null) {
-                        donation.setId(snapshot.getKey());
+                        donation.setId(ds.getKey());
                         donationList.add(donation);
                     }
                 }
@@ -65,32 +65,27 @@ public class DonationManagementActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(DonationManagementActivity.this,
-                        "Error loading donations: " + databaseError.getMessage(),
+                        "Error loading donations: " + error.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void acknowledgeDonation(Donation donation) {
-        String donationId = donation.getId();
-        if (donationId == null) {
-            Toast.makeText(this, "Cannot acknowledge donation: missing id", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if (donation.getId() == null) return;
 
         Map<String, Object> updates = new HashMap<>();
         updates.put("status", "acknowledged");
-        updates.put("seenByUser", false); // ensure user will get a notification
+        updates.put("seenByUser", false);
 
-        donationsRef.child(donationId).updateChildren(updates)
-                .addOnSuccessListener(aVoid ->
-                        Toast.makeText(DonationManagementActivity.this,
-                                "Donation acknowledged ✅", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e ->
-                        Toast.makeText(DonationManagementActivity.this,
-                                "Failed to acknowledge donation: " + e.getMessage(),
-                                Toast.LENGTH_SHORT).show());
+        donationsRef.child(donation.getId())
+                .updateChildren(updates)
+                .addOnSuccessListener(aVoid -> Toast.makeText(this,
+                        "Donation acknowledged ✅", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(this,
+                        "Failed to acknowledge donation: " + e.getMessage(),
+                        Toast.LENGTH_SHORT).show());
     }
 }

@@ -172,7 +172,7 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    // --- CATEGORY VIEWHOLDER ---
+    //CATEGORY VIEWHOLDER
     class CategoryViewHolder extends RecyclerView.ViewHolder {
         ImageView categoryIcon;
         TextView categoryTitle;
@@ -190,7 +190,7 @@ public class DonationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    // --- SUBCATEGORY VIEWHOLDER ---
+    //SUBCATEGORY VIEWHOLDER
     class SubCategoryViewHolder extends RecyclerView.ViewHolder {
         ImageView subCategoryIcon;
         TextView subCategoryName;

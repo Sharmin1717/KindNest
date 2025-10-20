@@ -35,9 +35,12 @@ public class AdminActivity extends AppCompatActivity {
         );
 
         // Open acknowledged donations
-        acknowledgedDonationsCard.setOnClickListener(v ->
-                startActivity(new Intent(AdminActivity.this, AcknowledgedDonationsActivity.class))
-        );
+        acknowledgedDonationsCard.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminActivity.this, AcknowledgedDonationsActivity.class);
+            intent.putExtra("IS_ADMIN", true); // important!
+            startActivity(intent);
+        });
+
 
         logoutCard.setOnClickListener(v -> {
             mAuth.signOut();

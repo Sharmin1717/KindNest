@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
         profileBtn.setOnClickListener(v ->
                 startActivity(new Intent(this, ProfileActivity.class)));
 
-        // 🔔 Notification button click → open acknowledged donations
+        //  Notification button click → open acknowledged donations
         notificationBtn.setOnClickListener(v -> markAcknowledgedAsSeenAndOpen());
 
         // Listen for new acknowledged donations
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
                 });
     }
 
-    /** Mark all acknowledged donations as seen and open the AcknowledgedDonationsActivity */
+    // Mark all acknowledged donations as seen and open the AcknowledgedDonationsActivity
     private void markAcknowledgedAsSeenAndOpen() {
         if (auth.getCurrentUser() == null) return;
         String userId = auth.getCurrentUser().getUid();
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
                 });
     }
 
-    /** Load NGO list from Firebase */
+    //Load NGO list from Firebase
     private void loadNGOsFromFirebase() {
         progressBar.setVisibility(View.VISIBLE);
         ngoRecyclerView.setVisibility(View.GONE);

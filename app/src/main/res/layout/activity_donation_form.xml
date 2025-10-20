@@ -54,7 +54,7 @@
             android:id="@+id/payBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Donate via UddoktaPay Demo"
+            android:text="Donate via UddoktaPay"
             android:layout_marginTop="16dp" />
 
         <!-- bKash Dummy Payment -->
