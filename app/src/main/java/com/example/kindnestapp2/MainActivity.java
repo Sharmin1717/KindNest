@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NGOAdapter.OnNGOC
                                     && "acknowledged".equalsIgnoreCase(donation.getStatus())
                                     && !donation.isSeenByUser()) {
                                 hasNewAcknowledged = true;
-                                break; // no need to check further
+                                break;
                             }
                         }
 
